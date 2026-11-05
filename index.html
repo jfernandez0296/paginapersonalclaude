@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>J. Fernández – Creador, Ingeniero y Entusiasta del Bienestar</title>
+<meta name="description" content="Página personal de J. Fernández. Únete a #TeamFernandez.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f6f6;
+    --bg-alt: #e2e2e2;
+    --bg-soft: #e6e6e6;
+    --ink: #000;
+    --white: #fff;
+    --accent: #c4253d;
+    --cond: "Open Sans Condensed", "Arial Narrow", sans-serif;
+    --body: "Open Sans", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--body); font-size: 18px; line-height: 1.12; color: var(--ink); background: var(--bg); overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+  .cond { font-family: var(--cond); font-weight: 700; text-transform: uppercase; }
+
+  /* ---------- Botones ---------- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    font-family: var(--cond); font-weight: 700; font-size: 17px; letter-spacing: 1px;
+    background: var(--ink); color: var(--white); border: 0; border-radius: 30px;
+    padding: 10px 24px; cursor: pointer; transition: background .25s, transform .25s;
+    text-transform: uppercase; white-space: nowrap;
+  }
+  .btn:hover { background: var(--accent); }
+  .btn.pill-lower { text-transform: none; }
+
+  /* ---------- Header ---------- */
+  header {
+    position: fixed; inset: 0 0 auto 0; z-index: 50; height: 70px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 45px; transition: background .3s, box-shadow .3s;
+  }
+  header.scrolled { background: rgba(246,246,246,.96); box-shadow: 0 1px 8px rgba(0,0,0,.08); }
+  .logo { font-family: var(--body); font-weight: 400; font-size: 21px; line-height: 1.35; letter-spacing: 9px; text-transform: uppercase; }
+  .logo span { display: block; }
+  .logo span:last-child { font-weight: 600; letter-spacing: 15px; }
+  .head-right { display: flex; align-items: center; gap: 26px; }
+  .join-top {
+    font-family: var(--cond); font-weight: 700; font-size: 26px; letter-spacing: 1px;
+    background: var(--ink); color: var(--white); padding: 0 22px; height: 34px;
+    display: inline-flex; align-items: center; gap: 18px; text-transform: uppercase;
+    transition: background .25s;
+  }
+  .join-top:hover { background: var(--accent); }
+  .join-top svg { width: 26px; height: 20px; fill: currentColor; }
+  .socials { display: flex; align-items: center; gap: 26px; }
+  .socials a { display: inline-flex; transition: color .2s, transform .2s; }
+  .socials a:hover { color: var(--accent); transform: translateY(-2px); }
+  .socials svg { height: 30px; width: auto; fill: currentColor; }
+  .burger { background: none; border: 0; cursor: pointer; width: 26px; height: 20px; position: relative; margin-left: 30px; }
+  .burger span { position: absolute; left: 0; width: 100%; height: 4px; background: var(--ink); transition: .3s; }
+  .burger span:nth-child(1) { top: 0; } .burger span:nth-child(2) { top: 8px; } .burger span:nth-child(3) { top: 16px; }
+  .burger.open span:nth-child(1) { top: 8px; transform: rotate(45deg); background: var(--white); }
+  .burger.open span:nth-child(2) { opacity: 0; }
+  .burger.open span:nth-child(3) { top: 8px; transform: rotate(-45deg); background: var(--white); }
+
+  /* Menú pantalla completa */
+  .fullmenu {
+    position: fixed; inset: 0; z-index: 40; background: rgba(0,0,0,.94);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; visibility: hidden; transition: opacity .35s, visibility .35s;
+  }
+  .fullmenu.open { opacity: 1; visibility: visible; }
+  .fullmenu ul { list-style: none; text-align: center; }
+  .fullmenu li { margin: 14px 0; transform: translateY(20px); opacity: 0; transition: .4s; }
+  .fullmenu.open li { transform: none; opacity: 1; }
+  .fullmenu.open li:nth-child(2) { transition-delay: .05s; } .fullmenu.open li:nth-child(3) { transition-delay: .1s; }
+  .fullmenu.open li:nth-child(4) { transition-delay: .15s; } .fullmenu.open li:nth-child(5) { transition-delay: .2s; }
+  .fullmenu a { font-family: var(--cond); font-weight: 700; font-size: 35px; letter-spacing: 2px; color: var(--white); text-transform: uppercase; transition: color .2s; }
+  .fullmenu a:hover { color: var(--accent); }
+  body.menu-open header .logo, body.menu-open header .socials, body.menu-open header .join-top { opacity: 0; pointer-events: none; }
+
+  /* ---------- Hero ---------- */
+  .hero { position: relative; height: 800px; overflow: hidden; display: flex; align-items: center; }
+  .brush { position: absolute; left: -150px; top: -110px; width: 1000px; height: 1000px; pointer-events: none; }
+  .hero-inner { position: relative; z-index: 2; width: 100%; display: grid; grid-template-columns: 360px 530px 1fr; align-items: center; padding-top: 70px; }
+  .hero-text { grid-column: 2; }
+  .hero h1 { font-family: var(--cond); font-weight: 700; font-size: 55px; line-height: .82; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 26px; }
+  .hero p { font-size: 18px; line-height: 1.12; }
+  .hero p a { color: #555; }
+  .hero p a:hover { color: var(--accent); }
+  .inline-form { display: flex; align-items: center; gap: 22px; margin-top: 26px; }
+  .field {
+    font-family: var(--body); font-size: 18px; text-align: center; text-transform: uppercase;
+    border: 0; border-bottom: 2px solid var(--ink); background: var(--white); padding: 14px 10px; outline: none; width: 287px;
+  }
+  .field::placeholder { color: #777; }
+  .field:focus { border-bottom-color: var(--accent); }
+  .hero-photo { grid-column: 3; align-self: end; justify-self: center; margin-bottom: -120px; }
+  .portrait { width: 360px; height: 560px; filter: grayscale(1); }
+  .form-msg { font-family: var(--cond); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-top: 14px; min-height: 22px; color: var(--accent); }
+
+  /* ---------- Quién es ---------- */
+  .about { display: grid; grid-template-columns: 560px 1fr; background: var(--bg); }
+  .about-photo { height: 560px; background: linear-gradient(135deg,#3a3a3a,#9a9a9a); position: relative; overflow: hidden; filter: grayscale(1); }
+  .about-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .chair { position: absolute; left: 30px; right: -10px; bottom: 50px; height: 150px; background: #111; display: flex; align-items: center; justify-content: center; transform: rotate(-2deg); }
+  .chair span { font-family: var(--cond); font-weight: 700; color: #fff; font-size: 74px; letter-spacing: 4px; }
+  .about-text { padding: 140px 110px 80px 175px; }
+  .about-text .pre { font-family: var(--cond); font-weight: 300; font-size: 28px; letter-spacing: 1px; text-transform: uppercase; }
+  .about-text h2 { font-family: var(--cond); font-weight: 700; font-size: 55px; line-height: 1; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 30px; }
+  .about-text p { margin-bottom: 32px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 2px; }
+  .tags .btn { font-size: 17px; padding: 10px 25px; }
+
+  /* ---------- Instagram ---------- */
+  .insta { background: var(--bg-alt); padding: 38px 10px 40px; text-align: center; }
+  .section-title { font-family: var(--cond); font-weight: 700; font-size: 40px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 44px; }
+  .feed-viewport { overflow: hidden; }
+  .feed-track { display: flex; transition: transform .6s ease; }
+  .feed-page { flex: 0 0 100%; display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+  .post { text-align: center; }
+  .post .thumb { aspect-ratio: 1/1; position: relative; overflow: hidden; }
+  .post .thumb div { position: absolute; inset: 0; transition: transform .5s; }
+  .post:hover .thumb div { transform: scale(1.06); }
+  .post .play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .post .play svg { width: 48px; fill: rgba(255,255,255,.95); filter: drop-shadow(0 2px 4px rgba(0,0,0,.3)); }
+  .post .cap { font-size: 15px; color: #333; margin: 12px 8px 6px; min-height: 18px; }
+  .post .meta { font-size: 14px; color: #555; display: flex; justify-content: center; gap: 16px; }
+  .post .meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .post .meta svg { width: 14px; fill: #555; }
+  .dots { display: flex; justify-content: center; gap: 12px; margin: 26px 0 16px; }
+  .dots button { width: 12px; height: 12px; border-radius: 50%; border: 0; background: #b9b9b9; cursor: pointer; }
+  .dots button.on { background: #222; }
+  .insta .btn svg { width: 16px; fill: currentColor; }
+  .insta .btn { font-size: 18px; padding: 10px 36px; }
+
+  /* ---------- Noticias ---------- */
+  .news-head { background: var(--bg-alt); text-align: center; padding: 10px 0 0; }
+  .news-head .section-title { margin-bottom: 36px; }
+  .news { position: relative; height: 500px; overflow: hidden; }
+  .slide { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 60px; text-align: center; opacity: 0; transition: opacity .8s; }
+  .slide.on { opacity: 1; z-index: 1; }
+  .slide h3 { font-family: var(--cond); font-weight: 700; color: var(--white); font-size: 55px; line-height: 1.05; text-transform: uppercase; text-shadow: 0 2px 12px rgba(0,0,0,.25); margin-bottom: 20px; padding: 0 40px; }
+  .slide .btn { padding: 10px 34px; }
+  .arrow { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 40px; height: 40px; border-radius: 50%; border: 0; background: rgba(40,40,60,.75); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+  .arrow:hover { background: var(--accent); }
+  .arrow svg { width: 14px; fill: currentColor; }
+  .arrow.prev { left: 20px; } .arrow.next { right: 20px; }
+
+  /* ---------- Newsletter ---------- */
+  .join { background: var(--bg-soft); display: grid; grid-template-columns: 1fr 443px; gap: 90px; padding: 72px 55px 0 143px; align-items: center; }
+  .join h2 { font-family: var(--cond); font-weight: 700; font-size: 55px; letter-spacing: 3px; text-transform: uppercase; }
+  .join h2 em { font-style: normal; color: var(--accent); }
+  .join .sub { font-family: var(--cond); font-weight: 300; font-size: 21px; text-transform: uppercase; letter-spacing: .5px; line-height: 1.1; margin-top: 10px; padding-bottom: 18px; border-bottom: 1px solid #ddd; }
+  .join-card { background: var(--white); padding: 60px 44px 78px; text-align: center; align-self: stretch; }
+  .join-card .field { width: 100%; background: transparent; margin-bottom: 10px; }
+  .join-card .btn { margin-top: 22px; }
+
+  /* ---------- Footer ---------- */
+  footer { background: var(--white); text-align: center; padding: 30px 20px 26px; }
+  footer .socials { justify-content: center; gap: 40px; margin-bottom: 26px; }
+  footer .socials svg { height: 52px; }
+  footer small { font-size: 14px; color: #444; }
+  footer small a { text-decoration: underline; }
+
+  /* Volver arriba */
+  .totop { position: fixed; right: 25px; bottom: 65px; width: 63px; height: 63px; background: var(--accent); color: #fff; border: 0; cursor: pointer; z-index: 30; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: .3s; }
+  .totop.show { opacity: 1; visibility: visible; }
+  .totop svg { width: 24px; fill: currentColor; }
+
+  /* Cookies */
+  .cookie { position: fixed; inset: auto 0 0 0; z-index: 60; background: #000; color: #fff; font-size: 13px; font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; gap: 12px; padding: 16px 50px; }
+  .cookie button { background: #f6f6f6; border: 0; padding: 2px 8px; border-radius: 3px; cursor: pointer; font-size: 13px; }
+  .cookie .x { position: absolute; right: 16px; background: none; color: #555; font-size: 22px; }
+  .cookie.hide { display: none; }
+
+  /* Animación de entrada */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity .8s ease, transform .8s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 1200px) {
+    .hero-inner { grid-template-columns: 1fr 1fr; padding: 70px 40px 0; gap: 30px; }
+    .hero-text { grid-column: 1; }
+    .hero-photo { grid-column: 2; }
+    .about { grid-template-columns: 45% 1fr; }
+    .about-text { padding: 80px 50px; }
+    .join { padding: 60px 40px 0; gap: 40px; grid-template-columns: 1fr 380px; }
+  }
+  @media (max-width: 900px) {
+    header { padding: 0 16px; }
+    .join-top, header .socials { display: none; }
+    .logo { font-size: 16px; letter-spacing: 6px; }
+    .logo span:last-child { letter-spacing: 11px; }
+    .hero { height: auto; padding: 100px 0 0; }
+    .brush { left: -40%; top: -10%; width: 160%; height: auto; }
+    .hero-inner { grid-template-columns: 1fr; padding: 40px 16px 0; text-align: center; }
+    .hero-text, .hero-photo { grid-column: 1; }
+    .hero-photo { margin: 30px 0 0; }
+    .portrait { width: 260px; height: 400px; }
+    .hero h1 { font-size: 42px; }
+    .inline-form { flex-direction: column; gap: 14px; }
+    .field { width: 100%; max-width: 320px; }
+    .about { grid-template-columns: 1fr; }
+    .about-photo { height: 380px; }
+    .chair { left: 16px; right: 16px; height: 110px; }
+    .chair span { font-size: 44px; }
+    .about-text { padding: 50px 16px; }
+    .about-text h2 { font-size: 42px; }
+    .feed-page { grid-template-columns: repeat(2, 1fr); }
+    .feed-page .post:nth-child(n+5) { display: none; }
+    .section-title { font-size: 30px; }
+    .slide h3 { font-size: 32px; padding: 0 60px; }
+    .news { height: 420px; }
+    .join { grid-template-columns: 1fr; padding: 50px 16px 0; gap: 30px; }
+    .join h2 { font-size: 42px; }
+    .join-card { padding: 40px 20px 50px; }
+    footer .socials { gap: 24px; }
+    footer .socials svg { height: 36px; }
+    .totop { width: 48px; height: 48px; right: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SVG sprites -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-fb" viewBox="0 0 320 512"><path d="M279.1 288l14.2-92.7h-88.9v-60.1c0-25.4 12.4-50.1 52.2-50.1h40.4V6.3S260.4 0 225.4 0c-73.2 0-121.1 44.4-121.1 124.7v70.6H22.9V288h81.4v224h100.2V288z"/></symbol>
+    <symbol id="i-ig" viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></symbol>
+    <symbol id="i-x" viewBox="0 0 512 512"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></symbol>
+    <symbol id="i-yt" viewBox="0 0 576 512"><path d="M549.7 124.1c-6.3-23.7-24.8-42.3-48.3-48.6C458.8 64 288 64 288 64S117.2 64 74.6 75.5c-23.5 6.3-42 24.9-48.3 48.6C14.9 167 14.9 256.4 14.9 256.4s0 89.4 11.4 132.3c6.3 23.6 24.8 41.5 48.3 47.8C117.2 448 288 448 288 448s170.8 0 213.4-11.5c23.5-6.3 42-24.2 48.3-47.8 11.4-42.9 11.4-132.3 11.4-132.3s0-89.4-11.4-132.3zM232.2 337.6V175.2l142.7 81.2-142.7 81.2z"/></symbol>
+    <symbol id="i-tt" viewBox="0 0 448 512"><path d="M448 209.9a210.1 210.1 0 0 1-122.8-39.3V349.4A162.6 162.6 0 1 1 185 188.3V278.2a74.6 74.6 0 1 0 52.2 71.2V0l88 0a121.2 121.2 0 0 0 1.9 22.2h0A122.2 122.2 0 0 0 381 102.4a121.4 121.4 0 0 0 67 20.1z"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 512 512"><path d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 512 512"><path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/></symbol>
+    <symbol id="i-comment" viewBox="0 0 512 512"><path d="M256 32C114.6 32 0 125.1 0 240c0 49.6 21.4 95 57 130.7C44.5 421.1 2.7 466 2.2 466.5c-2.2 2.3-2.8 5.7-1.5 8.7S4.8 480 8 480c66.3 0 116-31.8 140.6-51.4 32.7 12.3 69 19.4 107.4 19.4 141.4 0 256-93.1 256-208S397.4 32 256 32z"/></symbol>
+    <symbol id="i-play" viewBox="0 0 448 512"><path d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z"/></symbol>
+    <symbol id="i-left" viewBox="0 0 320 512"><path d="M34.5 239L228.9 44.7c9.4-9.4 24.6-9.4 33.9 0l22.7 22.7c9.4 9.4 9.4 24.5 0 33.9L131.5 256l154 154.8c9.3 9.4 9.3 24.5 0 33.9l-22.7 22.7c-9.4 9.4-24.6 9.4-33.9 0L34.5 273c-9.4-9.4-9.4-24.6 0-34z"/></symbol>
+    <symbol id="i-right" viewBox="0 0 320 512"><path d="M285.5 273L91.1 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.7-22.7c-9.4-9.4-9.4-24.5 0-33.9L188.5 256 34.5 101.3c-9.3-9.4-9.3-24.5 0-33.9l22.7-22.7c9.4-9.4 24.6-9.4 33.9 0L285.5 239c9.4 9.4 9.4 24.6 0 34z"/></symbol>
+    <symbol id="i-up" viewBox="0 0 448 512"><path d="M240.9 130.8l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9l-22.7 22.7c-9.4 9.4-24.5 9.4-33.9 0L224 227.5 69.5 381.8c-9.4 9.3-24.5 9.3-33.9 0l-22.7-22.7c-9.4-9.4-9.4-24.6 0-33.9L207 130.8c9.4-9.4 24.6-9.4 33.9 0z"/></symbol>
+  </defs>
+</svg>
+
+<header id="top">
+  <a href="#" class="logo" aria-label="Inicio"><span>J.</span><span>Fernández</span></a>
+  <div class="head-right">
+    <a href="#unete" class="join-top">Únete #TeamFernandez <svg><use href="#i-mail"/></svg></a>
+    <nav class="socials" aria-label="Redes sociales">
+      <a href="#" aria-label="Facebook"><svg viewBox="0 0 320 512"><use href="#i-fb"/></svg></a>
+      <a href="#" aria-label="Instagram"><svg viewBox="0 0 448 512"><use href="#i-ig"/></svg></a>
+      <a href="#" aria-label="X"><svg viewBox="0 0 512 512"><use href="#i-x"/></svg></a>
+      <a href="#" aria-label="YouTube"><svg viewBox="0 0 576 512"><use href="#i-yt"/></svg></a>
+    </nav>
+    <button class="burger" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="fullmenu" id="menu">
+  <ul>
+    <li><a href="#">Inicio</a></li>
+    <li><a href="#quien-soy">Quién soy</a></li>
+    <li><a href="#instagram">Instagram</a></li>
+    <li><a href="#noticias">Noticias</a></li>
+    <li><a href="#unete">Únete</a></li>
+  </ul>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <!-- Pincelada circular multicolor (generada con SVG) -->
+  <svg class="brush" viewBox="0 0 1000 1000" aria-hidden="true">
+    <defs>
+      <linearGradient id="rainbow" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#c79a12"/>
+        <stop offset=".2" stop-color="#e2b519"/>
+        <stop offset=".36" stop-color="#6aa82b"/>
+        <stop offset=".46" stop-color="#1a8f4c"/>
+        <stop offset=".56" stop-color="#20c4b4"/>
+        <stop offset=".64" stop-color="#e3519a"/>
+        <stop offset=".8" stop-color="#f06aa9"/>
+        <stop offset="1" stop-color="#f7a7c6"/>
+      </linearGradient>
+      <filter id="rough" x="-30%" y="-30%" width="160%" height="160%" filterUnits="objectBoundingBox">
+        <feTurbulence type="fractalNoise" baseFrequency=".02 .06" numOctaves="3" seed="7" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="22" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+      <filter id="foil">
+        <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="3" result="t"/>
+        <feColorMatrix in="t" type="saturate" values="0" result="g"/>
+        <feComponentTransfer in="g" result="g2"><feFuncA type="table" tableValues="0 .35"/></feComponentTransfer>
+        <feComposite in="g2" in2="SourceGraphic" operator="in" result="tex"/>
+        <feBlend in="SourceGraphic" in2="tex" mode="multiply"/>
+      </filter>
+    </defs>
+    <g filter="url(#foil)">
+      <path filter="url(#rough)" d="M760 250 C 640 90, 330 70, 190 230 C 40 400, 70 690, 250 820 C 420 940, 680 900, 790 780"
+        fill="none" stroke="url(#rainbow)" stroke-width="150" stroke-linecap="butt"/>
+    </g>
+  </svg>
+
+  <div class="hero-inner">
+    <div class="hero-text reveal">
+      <h1>Tu dosis diaria de inspiración</h1>
+      <p>“Como creador, ingeniero y entusiasta del bienestar, todo lo que hago busca ayudar a las personas a sentirse mejor. Si la risa es tu medicina o te gusta sudar la camiseta, <a href="#unete">#TeamFernandez</a> es tu lugar.”<br>xo J.</p>
+      <form class="inline-form" data-form>
+        <input class="field" type="email" name="email" placeholder="*Email" required aria-label="Email">
+        <button class="btn" type="submit">Únete #TeamFernandez</button>
+      </form>
+      <div class="form-msg" aria-live="polite"></div>
+    </div>
+    <div class="hero-photo reveal">
+      <!-- Reemplaza este SVG por tu foto: <img class="portrait" src="img/tu-foto.png" alt="Tu nombre"> -->
+      <svg class="portrait" viewBox="0 0 360 560" role="img" aria-label="Foto de perfil (reemplazar)">
+        <defs><linearGradient id="pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a5a5a"/><stop offset="1" stop-color="#1c1c1c"/></linearGradient></defs>
+        <circle cx="180" cy="160" r="88" fill="url(#pg)"/>
+        <path d="M30 560 C 30 380, 100 290, 180 290 C 260 290, 330 380, 330 560 Z" fill="url(#pg)"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- QUIÉN SOY -->
+<section class="about" id="quien-soy">
+  <div class="about-photo">
+    <!-- Reemplaza por tu foto: <img src="img/foto-2.jpg" alt=""> -->
+    <div class="chair"><span>FERNÁNDEZ</span></div>
+  </div>
+  <div class="about-text reveal">
+    <div class="pre">¿Quién es</div>
+    <h2>J. Fernández?</h2>
+    <p>Creador de contenido, ingeniero y entusiasta del bienestar, J. Fernández comparte historias, ideas y proyectos con una comunidad que crece cada día. Desde Lima para el mundo, su misión es ayudar a las personas a sentirse mejor a través de contenido honesto, creativo y de alta calidad.</p>
+    <div class="tags">
+      <a href="#" class="btn pill-lower">Personaje</a>
+      <a href="#" class="btn pill-lower">Impacto</a>
+      <a href="#" class="btn pill-lower">Proyectos</a>
+      <a href="#" class="btn pill-lower">Acción</a>
+    </div>
+  </div>
+</section>
+
+<!-- INSTAGRAM -->
+<section class="insta" id="instagram">
+  <h2 class="section-title">Sigue a @jfernandez en Instagram</h2>
+  <div class="feed-viewport"><div class="feed-track" id="feed"></div></div>
+  <div class="dots" id="feedDots"></div>
+  <a href="#" class="btn"><svg viewBox="0 0 448 512"><use href="#i-ig"/></svg> Sígueme en Instagram</a>
+</section>
+
+<!-- NOTICIAS -->
+<div class="news-head" id="noticias"><h2 class="section-title">Noticias</h2></div>
+<section class="news">
+  <div class="slide on" style="background:linear-gradient(120deg,#6b4ce6 0%,#b06ad9 45%,#e57bc0 100%)">
+    <h3>J. Fernández lanza su nuevo proyecto<br>de tecnología y bienestar</h3>
+    <a href="#" class="btn">Ver más</a>
+  </div>
+  <div class="slide" style="background:linear-gradient(120deg,#0f8b8d 0%,#20c4b4 50%,#a7e3c8 100%)">
+    <h3>Nueva serie en YouTube:<br>ingeniería en la vida diaria</h3>
+    <a href="#" class="btn">Ver más</a>
+  </div>
+  <div class="slide" style="background:linear-gradient(120deg,#c4253d 0%,#e3519a 55%,#f7a7c6 100%)">
+    <h3>#TeamFernandez llega<br>a 10 mil miembros</h3>
+    <a href="#" class="btn">Ver más</a>
+  </div>
+  <button class="arrow prev" aria-label="Anterior"><svg viewBox="0 0 320 512"><use href="#i-left"/></svg></button>
+  <button class="arrow next" aria-label="Siguiente"><svg viewBox="0 0 320 512"><use href="#i-right"/></svg></button>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="join" id="unete">
+  <div class="reveal">
+    <h2>Únete <em>#TeamFernandez</em></h2>
+    <p class="sub">Suscríbete a mi newsletter para recibir mensajes personales y novedades. ¡Xo, los quiero a todos y no puedo esperar a estar en contacto!</p>
+  </div>
+  <form class="join-card" data-form>
+    <input class="field" type="text" name="nombre" placeholder="*Nombre" required aria-label="Nombre">
+    <input class="field" type="text" name="apellido" placeholder="*Apellido" required aria-label="Apellido">
+    <input class="field" type="email" name="email" placeholder="*Email" required aria-label="Email">
+    <button class="btn" type="submit">Únete #TeamFernandez</button>
+    <div class="form-msg" aria-live="polite"></div>
+  </form>
+</section>
+
+<footer>
+  <nav class="socials" aria-label="Redes sociales">
+    <a href="#" aria-label="Facebook"><svg viewBox="0 0 320 512"><use href="#i-fb"/></svg></a>
+    <a href="#" aria-label="Instagram"><svg viewBox="0 0 448 512"><use href="#i-ig"/></svg></a>
+    <a href="#" aria-label="X"><svg viewBox="0 0 512 512"><use href="#i-x"/></svg></a>
+    <a href="#" aria-label="YouTube"><svg viewBox="0 0 576 512"><use href="#i-yt"/></svg></a>
+    <a href="#" aria-label="TikTok"><svg viewBox="0 0 448 512"><use href="#i-tt"/></svg></a>
+  </nav>
+  <small>Copyright © <span id="year"></span>, J. Fernández. Todos los derechos reservados – <a href="#">Política de privacidad</a></small>
+</footer>
+
+<button class="totop" aria-label="Volver arriba"><svg viewBox="0 0 448 512"><use href="#i-up"/></svg></button>
+
+<div class="cookie" id="cookie">
+  Usamos cookies para darte la mejor experiencia en nuestro sitio. Si continúas, asumiremos que estás de acuerdo.
+  <button id="cookieOk">Ok</button>
+  <button class="x" aria-label="Cerrar">×</button>
+</div>
+
+<script>
+  // Año
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Header al hacer scroll + botón arriba
+  const header = document.querySelector('header'), totop = document.querySelector('.totop');
+  const onScroll = () => {
+    header.classList.toggle('scrolled', scrollY > 40);
+    totop.classList.toggle('show', scrollY > 500);
+  };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  totop.onclick = () => scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Menú hamburguesa
+  const burger = document.querySelector('.burger'), menu = document.getElementById('menu');
+  const toggleMenu = (open) => {
+    burger.classList.toggle('open', open); menu.classList.toggle('open', open);
+    document.body.classList.toggle('menu-open', open);
+    burger.setAttribute('aria-expanded', open);
+  };
+  burger.onclick = () => toggleMenu(!menu.classList.contains('open'));
+  menu.querySelectorAll('a').forEach(a => a.onclick = () => toggleMenu(false));
+  addEventListener('keydown', e => { if (e.key === 'Escape') toggleMenu(false); });
+
+  // Feed de Instagram (publicaciones de ejemplo — reemplázalas por las tuyas)
+  const posts = [
+    ['Me levanto. PÁNICO. Repito 🥴', 27317, 210, true],
+    ['Energía de lunes', 42174, 323, false],
+    ['Cómo aprovechar un día libre al máximo', 62121, 227, false],
+    ['Atardecer en la Costa Verde 🌅', 62375, 271, false],
+    ['Detrás de cámaras 🎬', 6273, 96, true],
+    ['Mira estoooo 🥹', 6176, 86, false],
+    ['Tomas falsas 🛸', 14459, 147, true],
+    ['Ya me sé la jerga 😎', 12879, 126, false],
+    ['¿¡Por quéééé hacen esto?!', 6998, 119, true],
+    ['Sin café, NO HAY CHANCE ☕', 4232, 43, false],
+    ['Gracias a Dios no había smartphones antes', 3432, 53, false],
+    ['Una de mis causas favoritas 💚', 71275, 345, false],
+    ['Un gran día todos los días', 101052, 746, true],
+    ['🏰💭', 42169, 244, false],
+    ['🥴', 3057, 46, false],
+    ['Todavía recuperándome… 🤠', 17242, 155, true],
+    ['Comprar online nunca me sale bien 😩', 24721, 169, false],
+    ['Envíale esto a alguien especial', 19681, 223, false],
+    ['El autocorrector me hace decir cosas', 34106, 406, true],
+    ['📲 Sin cafeína, ¡NI HABLAR!', 1444, 42, false],
+  ];
+  const palettes = [['#c79a12','#f0d36b'],['#1a8f4c','#7fd39a'],['#20c4b4','#a7e3e0'],['#e3519a','#f7a7c6'],['#6b4ce6','#c3b2f5'],['#333','#999']];
+  const feed = document.getElementById('feed'), dotsEl = document.getElementById('feedDots');
+  const perPage = 5, pages = Math.ceil(posts.length / perPage);
+  for (let p = 0; p < pages; p++) {
+    const page = document.createElement('div'); page.className = 'feed-page';
+    posts.slice(p * perPage, p * perPage + perPage).forEach(([cap, likes, com, video], i) => {
+      const [a, b] = palettes[(p * perPage + i) % palettes.length];
+      page.insertAdjacentHTML('beforeend', `
+        <a class="post" href="#">
+          <div class="thumb"><div style="background:linear-gradient(${35 + i * 40}deg, ${a}, ${b})"></div>
+            ${video ? '<span class="play"><svg viewBox="0 0 448 512"><use href="#i-play"/></svg></span>' : ''}</div>
+          <p class="cap">${cap.length > 45 ? cap.slice(0, 45) + ' ...' : cap}</p>
+          <p class="meta"><span><svg viewBox="0 0 512 512"><use href="#i-heart"/></svg>${likes}</span><span><svg viewBox="0 0 512 512"><use href="#i-comment"/></svg>${com}</span></p>
+        </a>`);
+    });
+    feed.appendChild(page);
+    const d = document.createElement('button'); d.setAttribute('aria-label', 'Página ' + (p + 1));
+    d.onclick = () => goFeed(p); dotsEl.appendChild(d);
+  }
+  let feedIdx = 0;
+  const goFeed = (i) => { feedIdx = i; feed.style.transform = `translateX(-${i * 100}%)`; [...dotsEl.children].forEach((d, j) => d.classList.toggle('on', j === i)); };
+  goFeed(0);
+  setInterval(() => goFeed((feedIdx + 1) % pages), 6000);
+
+  // Slider de noticias
+  const slides = [...document.querySelectorAll('.slide')]; let s = 0;
+  const show = (i) => { slides[s].classList.remove('on'); s = (i + slides.length) % slides.length; slides[s].classList.add('on'); };
+  document.querySelector('.arrow.prev').onclick = () => show(s - 1);
+  document.querySelector('.arrow.next').onclick = () => show(s + 1);
+  setInterval(() => show(s + 1), 7000);
+
+  // Formularios (solo front-end: conéctalos a tu servicio de newsletter)
+  document.querySelectorAll('[data-form]').forEach(f => f.addEventListener('submit', e => {
+    e.preventDefault();
+    const msg = f.querySelector('.form-msg') || f.parentElement.querySelector('.form-msg');
+    msg.textContent = '¡Gracias! Ya eres parte de #TeamFernandez 💌';
+    f.reset();
+  }));
+
+  // Animaciones al aparecer
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Cookies
+  const cookie = document.getElementById('cookie');
+  try { if (localStorage.getItem('cookieOk')) cookie.classList.add('hide'); } catch (e) {}
+  cookie.querySelectorAll('button').forEach(b => b.onclick = () => { cookie.classList.add('hide'); try { localStorage.setItem('cookieOk', 1); } catch (e) {} });
+</script>
+</body>
+</html>
